@@ -27,9 +27,64 @@ Update the following parameters in config/config.yaml to customize the dataset a
   - gamma: The weight applied to categorical distances in the K-Prototypes algorithm.
   - penalty_alpha: A penalty factor applied to the number of clusters in the combined evaluation metric.
 
-###  Steps to set up and run the project
+## 🔵 Steps to set up and run the project
 
-1. Clone the Repository
+### 1. Clone the Repository
 Clone the repository to your local machine:
+```python
+git clone https://github.com/d1akon/Kprototypes_clustering.git
+cd Kprototypes_clustering
+```
 
-🔵🔷🌀☄💠❄Ⓜ
+### 2. Create a Virtual Environment
+It is recommended to use a virtual environment to manage dependencies:
+
+```python
+python -m venv mlops-env
+```
+
+  Activate the virtual environment:
+
+* On Windows:
+
+```powershell
+.\mlops-env\Scripts\activate
+```
+
+* On Linux/MacOS:
+
+```bash
+source mlops-env/bin/activate
+```
+
+### 3. Install Dependencies
+Install the required Python packages:
+
+```python
+pip install -r requirements.txt
+```
+
+### 4. Update Configuration (Optional)
+Modify the ```config/config.yaml``` file to fit your dataset or clustering requirements. 
+
+### 5. Run Tests
+Verify the implementation by running the test suite:
+
+```python
+pytest tests/
+```
+
+### 6. Execute the Training Pipeline
+Run the train.py pipeline to preprocess data, train the K-Prototypes model, and generate visualizations:
+
+```python
+python src/pipelines/train.py
+```
+
+#### The output includes:
+
+* **Logs:** Saved in data/output/train.log.
+* **Trained Model:** Saved as data/output/kprototypes_model.pkl.
+* **Visualizations:** Shown during execution, including:
+* **Cluster visualization (PCA/t-SNE).**
+* **Cluster-specific numerical feature analysis.**
