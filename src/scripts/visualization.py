@@ -7,45 +7,45 @@ from sklearn.manifold import TSNE
 
 def visualize_clusters(data, X_num_scaled, X_cat_encoded, labels):
     """
-    Visualiza los clusters utilizando PCA y TSNE.
+    Visualizes the clusters using PCA and TSNE.
     
-    :param data: DataFrame original con los clusters asignados.
-    :param X_num_scaled: Datos numéricos escalados.
-    :param X_cat_encoded: Datos categóricos codificados.
-    :param labels: Clusters asignados por el modelo.
+    :param data: Original DataFrame with assigned clusters.
+    :param X_num_scaled: Scaled numerical data.
+    :param X_cat_encoded: Encoded categorical data.
+    :param labels: Clusters assigned by the model.
     """
-    # Combinar datos numéricos y categóricos
+    #----- Combine numerical and categorical data
     X_combined = pd.concat([X_num_scaled, X_cat_encoded], axis=1)
 
-    # PCA para reducir dimensiones a 2D
+    #----- PCA to reduce dimensions to 2D
     pca = PCA(n_components=2)
     X_pca = pca.fit_transform(X_combined)
 
-    # TSNE para reducir dimensiones a 2D
+    #----- TSNE to reduce dimensions to 2D
     tsne = TSNE(n_components=2, random_state=42, perplexity=30, n_iter=1000)
     X_tsne = tsne.fit_transform(X_combined)
 
-    # Agregar clusters y coordenadas a un DataFrame
+    #----- Add clusters and coordinates to DataFrame
     data['Cluster'] = labels
     data['PCA1'] = X_pca[:, 0]
     data['PCA2'] = X_pca[:, 1]
     data['TSNE1'] = X_tsne[:, 0]
     data['TSNE2'] = X_tsne[:, 1]
 
-    # Gráficos PCA
+    #----- PCA Plot
     plt.figure(figsize=(14, 6))
     plt.subplot(1, 2, 1)
     sns.scatterplot(data=data, x='PCA1', y='PCA2', hue='Cluster', palette='tab10', s=50)
-    plt.title('Clusters visualizados con PCA')
-    plt.xlabel('Componente Principal 1')
-    plt.ylabel('Componente Principal 2')
+    plt.title('Clusters Visualized with PCA')
+    plt.xlabel('Principal Component 1')
+    plt.ylabel('Principal Component 2')
 
-    # Gráficos TSNE
+    #----- TSNE Plot
     plt.subplot(1, 2, 2)
     sns.scatterplot(data=data, x='TSNE1', y='TSNE2', hue='Cluster', palette='tab10', s=50)
-    plt.title('Clusters visualizados con TSNE')
-    plt.xlabel('Dimensión TSNE 1')
-    plt.ylabel('Dimensión TSNE 2')
+    plt.title('Clusters Visualized with TSNE')
+    plt.xlabel('TSNE Dimension 1')
+    plt.ylabel('TSNE Dimension 2')
 
     plt.tight_layout()
     plt.show()
@@ -53,21 +53,21 @@ def visualize_clusters(data, X_num_scaled, X_cat_encoded, labels):
 
 def analyze_cluster_characteristics(data, numeric_cols):
     """
-    Analiza las características numéricas promedio de cada cluster.
+    Analyzes the average numerical characteristics of each cluster.
     
-    :param data: DataFrame original con los clusters asignados.
-    :param numeric_cols: Lista de columnas numéricas.
+    :param data: Original DataFrame with assigned clusters.
+    :param numeric_cols: List of numerical columns.
     """
-    # Agrupar por cluster y calcular promedios
+    #----- Group by cluster and calculate averages
     cluster_means = data.groupby('Cluster')[numeric_cols].mean()
-    print("Promedios por cluster:")
+    print("Averages per cluster:")
     print(cluster_means)
 
-    # Visualización de características por cluster
+    #----- Visualization of features by cluster
     cluster_means.T.plot(kind='bar', figsize=(12, 6))
-    plt.title("Promedio de características numéricas por cluster")
-    plt.ylabel("Valor promedio (escalado)")
-    plt.xlabel("Características")
+    plt.title("Average Numerical Features by Cluster")
+    plt.ylabel("Average Value (scaled)")
+    plt.xlabel("Features")
     plt.xticks(rotation=45)
     plt.legend(title="Cluster")
     plt.show()

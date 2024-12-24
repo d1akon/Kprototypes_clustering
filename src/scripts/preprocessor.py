@@ -3,12 +3,12 @@ from sklearn.preprocessing import StandardScaler
 
 class Preprocessor:
     """
-    Clase para el preprocesamiento de los datos.
+    Class for preprocessing the data.
     """
     def __init__(self, categorical_cols, numeric_cols):
         """
-        :param categorical_cols: Lista de columnas categóricas.
-        :param numeric_cols: Lista de columnas numéricas.
+        :param categorical_cols: List of categorical columns.
+        :param numeric_cols: List of numerical columns.
         """
         self.categorical_cols = categorical_cols
         self.numeric_cols = numeric_cols
@@ -16,9 +16,9 @@ class Preprocessor:
 
     def fit_transform(self, df: pd.DataFrame):
         """
-        Ajusta y transforma los datos categóricos y numéricos.
-        :param df: DataFrame de entrada.
-        :return: DataFrames escalados y codificados.
+        Fits and transforms the categorical and numerical data.
+        :param df: Input DataFrame.
+        :return: Scaled and encoded DataFrames.
         """
         for col in self.categorical_cols:
             df[col] = df[col].astype('category')
@@ -33,7 +33,7 @@ class Preprocessor:
 
     def transform(self, df: pd.DataFrame):
         """
-        Transforma datos nuevos usando el escalador ajustado.
+        Transforms new data using the fitted scaler.
         """
         for col in self.categorical_cols:
             if df[col].dtype.name != 'category':
