@@ -4,9 +4,9 @@ from scipy.stats import mode
 class KPrototypesCustom:
     def __init__(self, n_clusters=4, max_iter=100, gamma=1.0):
         """
-        :param n_clusters: Número de clusters.
-        :param max_iter: Iteraciones máximas.
-        :param gamma: Peso para la distancia categórica.
+        :param n_clusters: Number of clusters.
+        :param max_iter: Maximum number of iterations.
+        :param gamma: Weight for the categorical distance.
         """
         self.n_clusters = n_clusters
         self.max_iter = max_iter
@@ -15,11 +15,11 @@ class KPrototypesCustom:
 
     def fit(self, X_num, X_cat):
         """
-        Entrena el modelo con datos numéricos y categóricos.
+        Train the model with numeric and categorical data.
         """
         n_samples = X_num.shape[0]
 
-        # Inicializar los centroides aleatoriamente
+        #----- Initialize centroids randomly
         indices = np.random.choice(n_samples, self.n_clusters, replace=False)
         centroids_num = X_num[indices]
         centroids_cat = X_cat[indices]
@@ -38,7 +38,7 @@ class KPrototypesCustom:
 
     def _assign_clusters(self, X_num, X_cat, centroids_num, centroids_cat):
         """
-        Asigna puntos de datos al cluster más cercano.
+        Assign data points to the closest cluster.
         """
         distances = np.zeros((X_num.shape[0], self.n_clusters))
         for i, (c_num, c_cat) in enumerate(zip(centroids_num, centroids_cat)):
@@ -49,7 +49,7 @@ class KPrototypesCustom:
 
     def _update_centroids(self, X_num, X_cat, labels):
         """
-        Calcula nuevos centroides basados en las asignaciones.
+        Calculate new centroids based on the assignments.
         """
         centroids_num = np.zeros((self.n_clusters, X_num.shape[1]))
         centroids_cat = np.zeros((self.n_clusters, X_cat.shape[1]), dtype=X_cat.dtype)
@@ -63,10 +63,10 @@ class KPrototypesCustom:
 
     def predict(self, X_num, X_cat):
         """
-        Predice el cluster de nuevos datos.
+        Predict the cluster of new data points.
         """
         if self.centroids is None:
-            raise ValueError("El modelo no está entrenado.")
+            raise ValueError("The model is not trained.")
         centroids_num, centroids_cat = self.centroids
         distances = np.zeros((X_num.shape[0], self.n_clusters))
         for i, (c_num, c_cat) in enumerate(zip(centroids_num, centroids_cat)):
